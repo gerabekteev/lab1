@@ -1,0 +1,49 @@
+{
+    "one_time": [
+        {
+            "name_owner": "misha",
+            "transport": "marsrootka",
+            "cl": "2",
+            "time_ti_buy": "14.07.2023",
+            "price": "60"
+        }
+    ],
+    "many_time": [
+        {
+            "name_owner": "gera",
+            "transport": "car",
+            "cl": "1",
+            "time_ti_buy": "08.07.2023",
+            "price": "5900",
+            "col_use": "6"
+        }
+    ],
+    "subscription": [
+        {
+            "name_owner": "dima",
+            "transport": "plane",
+            "cl": "1",
+            "time_ti_buy": "18.01.2024",
+            "price": "454545454",
+            "col_day": "40"
+        },
+        {
+            "name_owner": "retttttt",
+            "transport": "f1",
+            "cl": "3",
+            "time_ti_buy": "13.11.2023",
+            "price": "100",
+            "col_day": "23"
+        }
+    ],
+    "preferential": [
+        {
+            "name_owner": "oleg",
+            "transport": "boat",
+            "cl": "3",
+            "time_ti_buy": "10.11.2023",
+            "price": "0",
+            "reason": "prosto tak"
+        }
+    ]
+}
