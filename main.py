@@ -118,7 +118,6 @@ def main():
             transport = input("Введите тип транспорта: ")
             cl = input("Введите класс билета: ")
             time_ti_buy = is_date_in_range("Введите дату оформления: ", start_date, end_date)
-            #price = positiv_number("Введите цену: ")
             reason = input("введите причину выдачи: ")
             exp = preferential(name_owner, transport, cl, time_ti_buy,0,reason)
             handler.add_preferential(data, exp)
@@ -138,28 +137,22 @@ def main():
 
         elif action == '10':
             js.save_to_json(data, filename_json)
-            #xm.save_to_xml(data, filename_xml)
+            xm.save_to_xml(data, filename_xml)
             print(f"Данные сохранены в {filename_json} и {filename_xml}")
 
         elif action == '11':
             break
 
-        # elif action == '12':
-        #     json_data = js.load_from_json('data.json')
-        #     xml_data = xm.load_from_xml('data.xml')
-        #     sync_data(json_data, xml_data)
-        #     js.save_to_json(json_data, 'data.json')
-        #     xm.save_to_xml(xml_data, 'data.xml')
-        #     print("Данные успешно синхронизированы и сохранены в оба файла.")
         elif action == '13':
             print("один -", len(data["one_time"]))
             print("много -",len(data["many_time"]))
             print("подписка -",len(data["subscription"]))
             print("льгота -",len(data["preferential"]))
-        # elif action == '999':
-        #     PIZDEC(data)
-        elif action == '14':
-            data_temp = js.load_from_json(filename)
+        elif action == '14' or action == "15":
+            if action=="14":
+                data_temp = js.load_from_json(filename_json)
+            else:
+                data_temp = xm.load_from_xml(filename_xml)
             try:
                 print("одноразовые:")
                 for exp in data_temp['one_time']:
@@ -198,7 +191,7 @@ def main():
 
 
         else:
-            print("Неверная команда!")
+            print("несуществующая команда")
 
 
 if __name__ == "__main__":
