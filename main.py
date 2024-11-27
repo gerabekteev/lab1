@@ -5,12 +5,12 @@ from datetime import datetime
 
 
 def is_date_in_range(temp, start_date, end_date):
-    date_format = "%Y-%m-%d"
+    date_format = "%d.%m.%Y"
     """
     Проверяет корректность даты и входит ли она в заданный временной промежуток.
 
     :param date_str: Введенная дата в виде строки.
-    :param date_format: Формат даты (например, '%Y-%m-%d').
+    :param date_format: Формат даты (например, "%d.%m.%Y").
     """
     while True:
         date_str = input(temp)
@@ -20,9 +20,9 @@ def is_date_in_range(temp, start_date, end_date):
             if start_date <= input_date <= end_date:
                 return date_str
             else:
-                return "Дата не входит в указанный промежуток."
+                print("Дата не входит в указанный промежуток.")
         except ValueError:
-            return False, "Некорректный формат даты!"
+            print("Некорректный формат даты!",date_format)
 
 
 def positiv_number(temp):
@@ -99,7 +99,7 @@ def main():
             cl = input("Введите класс билета: ")
             time_ti_buy = is_date_in_range("Введите дату оформления: ", start_date, end_date)
             price = positiv_number("Введите цену: ")
-            col_use = positiv_number("введите количество использований:")
+            col_use = positiv_number("введите количество использований: ")
             exp = many_time(name_owner, transport, cl, time_ti_buy,price,col_use)
             handler.add_many_time(data, exp)
 
@@ -109,8 +109,8 @@ def main():
             cl = input("Введите класс билета: ")
             time_ti_buy = is_date_in_range("Введите дату оформления: ", start_date, end_date)
             price = positiv_number("Введите цену: ")
-            col_day = positiv_number("введите количество дней:")
-            exp = many_time(name_owner, transport, cl, time_ti_buy,price,col_day)
+            col_day = positiv_number("введите количество дней: ")
+            exp = subscription(name_owner, transport, cl, time_ti_buy,price,col_day)
             handler.add_subscription(data, exp)
 
         elif action == '4':
@@ -119,8 +119,8 @@ def main():
             cl = input("Введите класс билета: ")
             time_ti_buy = is_date_in_range("Введите дату оформления: ", start_date, end_date)
             #price = positiv_number("Введите цену: ")
-            reason = input("введите причину выдачи")
-            exp = many_time(name_owner, transport, cl, time_ti_buy,0,reason)
+            reason = input("введите причину выдачи: ")
+            exp = preferential(name_owner, transport, cl, time_ti_buy,0,reason)
             handler.add_preferential(data, exp)
 
         elif action == '5':
@@ -138,7 +138,7 @@ def main():
 
         elif action == '10':
             js.save_to_json(data, filename_json)
-            xm.save_to_xml(data, filename_xml)
+            #xm.save_to_xml(data, filename_xml)
             print(f"Данные сохранены в {filename_json} и {filename_xml}")
 
         elif action == '11':
@@ -159,27 +159,42 @@ def main():
         # elif action == '999':
         #     PIZDEC(data)
         elif action == '14':
-            print("одноразовый:")
-            for exp in data['one_time']:
-                print(f"имя: {exp['name_owner']}, транспорт: {exp['transport']}, "
-                      f"класс: {exp['cl']}, время покупки: {exp['time_ti_buy']},"
-                      f"цена: {exp['price']}")
-
-            print("многоразовый:")
-            for exp in data['one_time']:
-                print(f"имя: {exp['name_owner']}, транспорт: {exp['transport']}, "
-                      f"класс: {exp['cl']}, время покупки: {exp['time_ti_buy']},"
-                      f"цена: {exp['price']},количество использований: {exp['col_use']}")
-            print("подписочный:")
-            for exp in data['one_time']:
-                print(f"имя: {exp['name_owner']}, транспорт: {exp['transport']}, "
-                      f"класс: {exp['cl']}, время покупки: {exp['time_ti_buy']},"
-                      f"цена: {exp['price']},количество дней: {exp['col_day']}")
-            print("льготный:")
-            for exp in data['one_time']:
-                print(f"имя: {exp['name_owner']}, транспорт: {exp['transport']}, "
-                      f"класс: {exp['cl']}, время покупки: {exp['time_ti_buy']},"
-                      f"цена: {exp['price']},причина: {exp['reason']}")
+            data_temp = js.load_from_json(filename)
+            try:
+                print("одноразовые:")
+                for exp in data_temp['one_time']:
+                    print(f"имя: {exp['name_owner']}, транспорт: {exp['transport']}, "
+                          f"класс: {exp['cl']}, время покупки: {exp['time_ti_buy']}, "
+                          f"цена: {exp['price']}")
+            except KeyError:
+                print("пусто")
+            try:
+                print("--------------------------")
+                print("многоразовый:")
+                for exp in data_temp['many_time']:
+                    print(f"имя: {exp['name_owner']}, транспорт: {exp['transport']}, "
+                          f"класс: {exp['cl']}, время покупки: {exp['time_ti_buy']}, "
+                          f"цена: {exp['price']}, количество использований: {exp['col_use']}")
+            except KeyError:
+                print("пусто")
+            try:
+                print("--------------------------")
+                print("подписочный:")
+                for exp in data_temp['subscription']:
+                    print(f"имя: {exp['name_owner']}, транспорт: {exp['transport']}, "
+                            f"класс: {exp['cl']}, время покупки: {exp['time_ti_buy']}, "
+                            f"цена: {exp['price']}, количество дней: {exp['col_day']}")
+            except KeyError:
+                print("Пусто")
+            try:
+                print("--------------------------")
+                print("льготный:")
+                for exp in data_temp['preferential']:
+                    print(f"имя: {exp['name_owner']}, транспорт: {exp['transport']}, "
+                          f"класс: {exp['cl']}, время покупки: {exp['time_ti_buy']}, "
+                          f"цена: {exp['price']}, причина: {exp['reason']}")
+            except KeyError:
+                print("пусто")
 
 
         else:
